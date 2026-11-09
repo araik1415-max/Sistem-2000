@@ -1,0 +1,6 @@
+{
+  "name": "Система 2000 — Бонусный кошелек",
+  "description": "Центральный бонусный счетчик с непрерывным начислением 10% годовых, пополнением депозита и каталогом товаров.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

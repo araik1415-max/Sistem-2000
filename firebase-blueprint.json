@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with wallet balance, deposit, bonus points and role",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "customer"] },
+        "realBalance": { "type": "number" },
+        "deposit": { "type": "number" },
+        "bonusPoints": { "type": "number" },
+        "lastAccrualTimestamp": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "email"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Purchase order in the online store",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "totalAmountDram": { "type": "number" },
+        "paidWith": { "type": "string", "enum": ["REAL_BALANCE", "BONUS_POINTS", "CARD", "IDRAM", "TELCELL"] },
+        "bonusPointsUsed": { "type": "number" },
+        "bonusEarned": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed", "delivered", "processing"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["orderId", "userId", "totalAmountDram", "paidWith", "status", "createdAt"]
+    },
+    "LedgerEntry": {
+      "title": "LedgerEntry",
+      "description": "Immutable double-entry financial ledger transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["DEPOSIT_TOPUP", "INTEREST_ACCRUAL", "PURCHASE", "BONUS_REWARD", "EXTERNAL_PAYMENT", "ADMIN_ADJUSTMENT"] },
+        "amount": { "type": "number" },
+        "fromAccount": { "type": "string" },
+        "toAccount": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "amount", "fromAccount", "toAccount", "timestamp"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Chat message history with Gemini assistant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "model", "system"] },
+        "text": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["id", "userId", "role", "text", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and wallet states"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Store purchase orders"
+    },
+    "/ledger/{ledgerId}": {
+      "schema": "LedgerEntry",
+      "description": "Financial ledger transactions"
+    },
+    "/users/{userId}/chats/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "User chat messages with AI assistant"
+    }
+  }
+}
